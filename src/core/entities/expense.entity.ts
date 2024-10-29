@@ -36,13 +36,13 @@ export class ExpenseEntity extends BaseEntity {
   notes: string;
 
   @ManyToOne(() => UserEntity, (user) => user.id, {
-    nullable: false,
+    nullable: true,
   })
   @JoinColumn({ name: 'user_id' })
   userId: UserEntity;
 
   @ManyToOne(() => CategoryEntity, (category) => category.id, {
-    nullable: false,
+    nullable: true,
   })
   @JoinColumn({ name: 'category_id' })
   categoryId: CategoryEntity;
