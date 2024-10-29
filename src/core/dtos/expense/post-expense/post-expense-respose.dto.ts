@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PostExpenseResponserDto {
+export class PostExpenseResponseDto {
   @ApiProperty()
   id: string;
 }
