@@ -16,7 +16,6 @@ export class ExpenseCreateFactoryService {
     expenseEntity.title = title;
     expenseEntity.amount = amount;
     expenseEntity.notes = isNotEmpty(notes) ? notes : '';
-    expenseEntity.date = new Date();
     expenseEntity.createdAt = new Date();
     expenseEntity.updatedAt = new Date();
 
