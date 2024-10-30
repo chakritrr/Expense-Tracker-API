@@ -11,6 +11,7 @@ import { LoginCreateUseCaseModule } from './use-case/login-create/login-create-u
 import { RegisterCreateUseCaseModule } from './use-case/register-create/register-create-use-case.module';
 import { ExpenseCreateUseCaseModule } from './use-case/expense-create/expense-create-use-case.module';
 import { ExpenseGetListUseCaseModule } from './use-case/expense-get-list/expense-get-list-use-case.module';
+import { ExpenseUpdateUseCaseModule } from './use-case/expense-update/expesne-update-use-case.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ExpenseGetListUseCaseModule } from './use-case/expense-get-list/expense
     LoginCreateUseCaseModule,
     ExpenseCreateUseCaseModule,
     ExpenseGetListUseCaseModule,
+    ExpenseUpdateUseCaseModule,
   ],
   controllers: [RegisterController, LoginController, ExpenseController],
 })

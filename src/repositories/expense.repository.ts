@@ -14,4 +14,15 @@ export class ExpenseRepository implements IExpenseRepository {
   findAll(): Promise<ExpenseEntity[]> {
     return this.expenseEntity.find();
   }
+
+  findOneByIdRelation(id: string): Promise<ExpenseEntity> {
+    return this.expenseEntity.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        userId: true,
+      },
+    });
+  }
 }
