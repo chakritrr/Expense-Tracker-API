@@ -16,6 +16,11 @@ export class PostExpenseRequestDto {
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
+  category: string;
+
+  @ApiProperty()
+  @IsString()
   @IsOptional()
   notes: string;
 }
