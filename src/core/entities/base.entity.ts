@@ -17,11 +17,4 @@ export abstract class BaseEntity {
     nullable: true,
   })
   updatedAt: Date;
-
-  @Column({
-    name: 'deleted_at',
-    type: 'date',
-    nullable: true,
-  })
-  deletedAt: Date;
 }
