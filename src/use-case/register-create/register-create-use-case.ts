@@ -36,10 +36,8 @@ export class RegisterCreateUseCase {
       return this.registerCreateFactoryService.constructResponse(userEntity.id);
     } catch (error) {
       console.error(error);
-      const statusCode = error.code
-        ? error.code
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-      throw new HttpException(error.message, statusCode);
+      await queryRunner.rollbackTransaction();
+      throw new HttpException(error?.message, HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await queryRunner.release();
     }

@@ -10,4 +10,8 @@ export class ExpenseRepository implements IExpenseRepository {
     @InjectRepository(ExpenseEntity)
     private readonly expenseEntity: Repository<ExpenseEntity>,
   ) {}
+
+  findAll(): Promise<ExpenseEntity[]> {
+    return this.expenseEntity.find();
+  }
 }
