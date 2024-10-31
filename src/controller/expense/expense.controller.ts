@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -13,6 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { PatchExpenseRequestDto, PostExpenseRequestDto } from 'src/core';
 import { JwtAuthGuard } from 'src/frameworks/guards/jwt.auth.guard';
 import { ExpenseCreateUseCase } from 'src/use-case/expense-create/expense-create-use-case';
+import { ExpenseDeleteUseCase } from 'src/use-case/expense-delete/expense-delete-use-case';
 import { ExpenseGetListUseCase } from 'src/use-case/expense-get-list/expense-get-list-use-case';
 import { ExpenseUpdateUseCase } from 'src/use-case/expense-update/expense-update-use-case';
 
@@ -24,6 +26,7 @@ export class ExpenseController {
     private readonly expenseCreateUseCase: ExpenseCreateUseCase,
     private readonly expenseGetListUseCase: ExpenseGetListUseCase,
     private readonly expenseUpdateUseCase: ExpenseUpdateUseCase,
+    private readonly expenseDeleteUseCase: ExpenseDeleteUseCase,
   ) {}
 
   @Post('/v1/expense')
@@ -48,5 +51,14 @@ export class ExpenseController {
   ) {
     const userId = req.user.userId;
     return this.expenseUpdateUseCase.updateExpense(id, patchExpenseRequestDto, userId);
+  }
+
+  @Delete('/v1/expense/:id')
+  deleteExpense(
+    @Param('id') id: string,
+    @Request() req,
+  ) {
+    const userId = req.user.userId;
+    return this.expenseDeleteUseCase.deleteExpense(id, userId);
   }
 }
