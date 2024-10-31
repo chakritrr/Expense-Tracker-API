@@ -12,6 +12,7 @@ import { RegisterCreateUseCaseModule } from './use-case/register-create/register
 import { ExpenseCreateUseCaseModule } from './use-case/expense-create/expense-create-use-case.module';
 import { ExpenseGetListUseCaseModule } from './use-case/expense-get-list/expense-get-list-use-case.module';
 import { ExpenseUpdateUseCaseModule } from './use-case/expense-update/expesne-update-use-case.module';
+import { ExpenseDeleteUseCaseModule } from './use-case/expense-delete/expense-delete-use-case.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ExpenseUpdateUseCaseModule } from './use-case/expense-update/expesne-up
     ExpenseCreateUseCaseModule,
     ExpenseGetListUseCaseModule,
     ExpenseUpdateUseCaseModule,
+    ExpenseDeleteUseCaseModule,
   ],
   controllers: [RegisterController, LoginController, ExpenseController],
 })
