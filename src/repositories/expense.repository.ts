@@ -25,4 +25,8 @@ export class ExpenseRepository implements IExpenseRepository {
       },
     });
   }
+
+  remove(expenseEntity: ExpenseEntity): Promise<ExpenseEntity> {
+    return this.expenseEntity.remove(expenseEntity);
+  }
 }
