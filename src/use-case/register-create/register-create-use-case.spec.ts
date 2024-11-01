@@ -1,14 +1,15 @@
+import { faker } from '@faker-js/faker/.';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DataSource } from 'typeorm';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
-import { faker } from '@faker-js/faker/.';
 import { IUserRepository, UserEntity } from 'src/core';
 import { RegisterRequestDto } from 'src/core/dtos';
 import { RegisterResponseDto } from 'src/core/dtos/register/register-response.dto';
 import { RegisterCreateFactoryService } from './register-create-factory.service';
 import { RegisterCreateUseCase } from './register-create-use-case';
 
-const mockUserRepository = {
+const mockIUserRepository = {
   findOneByEmail: jest.fn(),
 };
 
@@ -39,7 +40,7 @@ describe('RegisterCreateUseCase', () => {
         RegisterCreateUseCase,
         {
           provide: IUserRepository,
-          useValue: mockUserRepository,
+          useValue: mockIUserRepository,
         },
         {
           provide: DataSource,
@@ -74,13 +75,15 @@ describe('RegisterCreateUseCase', () => {
         id: faker.string.uuid(),
         createdAt: faker.date.past(),
         updatedAt: faker.date.past(),
-        deletedAt: faker.date.past(),
       } as UserEntity;
 
       const mockRes: RegisterResponseDto = {
         id: faker.string.uuid(),
       };
 
+      jest
+        .spyOn(mockIUserRepository, 'findOneByEmail')
+        .mockReturnValue(undefined);
       jest
         .spyOn(mockRegisterCreateFactoryService, 'createResgister')
         .mockReturnValue(mockUserEntity);
@@ -92,6 +95,7 @@ describe('RegisterCreateUseCase', () => {
 
       const queryRunner = mockDataSource.createQueryRunner();
 
+      expect(mockIUserRepository.findOneByEmail).toHaveBeenCalled();
       expect(
         mockRegisterCreateFactoryService.createResgister,
       ).toHaveBeenCalled();
@@ -102,6 +106,33 @@ describe('RegisterCreateUseCase', () => {
       expect(queryRunner.manager.save).toHaveBeenCalled();
       expect(queryRunner.commitTransaction).toHaveBeenCalled();
       expect(result).toEqual(mockRes);
+    });
+
+    it('should throw an HttpException if the email already exists', async () => {
+      const mockReq: RegisterRequestDto = {
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+      };
+
+      const mockUserEntity: UserEntity = {
+        email: mockReq.email,
+        password: faker.internet.password(),
+        id: faker.string.uuid(),
+        createdAt: faker.date.past(),
+        updatedAt: faker.date.past(),
+      } as UserEntity;
+
+      jest
+        .spyOn(mockIUserRepository, 'findOneByEmail')
+        .mockReturnValue(Promise.resolve(mockUserEntity));
+
+      await expect(
+        registerCreateUseCase.createRegister(mockReq),
+      ).rejects.toThrow(
+        new HttpException('Email already exists', HttpStatus.BAD_REQUEST),
+      );
+
+      expect(mockIUserRepository.findOneByEmail).toHaveBeenCalled();
     });
   });
 });
