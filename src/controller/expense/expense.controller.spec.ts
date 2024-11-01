@@ -11,9 +11,12 @@ import {
   GetExpenseListResponseDto,
   PatchExpenseRequestDto,
   PatchExpenseResponseDto,
+  PostExpenseReportListRequestDto,
+  PostExpenseReportListResponseDto,
   PostExpenseRequestDto,
   PostExpenseResponseDto,
 } from 'src/core';
+import { ExpenseReportCreateListUseCase } from 'src/use-case/expense-report-create-list/expense-report-create-list-use-case';
 
 const mockExpenseCreateUseCase = {
   createExpense: jest.fn(),
@@ -29,6 +32,10 @@ const mockExpenseUpdateUseCase = {
 
 const mockExpenseDeleteUseCase = {
   deleteExpense: jest.fn(),
+};
+
+const mockExpenseReportCreateListUseCase = {
+  createExpenseReportList: jest.fn(),
 };
 
 describe('Login-Controller', () => {
@@ -53,6 +60,10 @@ describe('Login-Controller', () => {
         {
           provide: ExpenseDeleteUseCase,
           useValue: mockExpenseDeleteUseCase,
+        },
+        {
+          provide: ExpenseReportCreateListUseCase,
+          useValue: mockExpenseReportCreateListUseCase,
         },
       ],
     }).compile();
@@ -186,6 +197,39 @@ describe('Login-Controller', () => {
       );
 
       expect(mockExpenseDeleteUseCase.deleteExpense).toHaveBeenCalled();
+      expect(result).toEqual(mockRes);
+    });
+  });
+
+  describe('postExpenseReportList', () => {
+    it('should call createExpenseReportList successful and return a response', async () => {
+      const mockUserId = {
+        user: {
+          userId: faker.string.uuid(),
+        },
+      };
+
+      const mockReq: PostExpenseReportListRequestDto = {
+        startDate: faker.date.past().toString(),
+        endDate: faker.date.past().toString(),
+      };
+
+      const mockRes: PostExpenseReportListResponseDto = {
+        category: faker.string.sample(5),
+        total: parseFloat(faker.finance.amount()),
+        count: parseInt(faker.finance.amount()),
+      };
+
+      jest
+        .spyOn(mockExpenseReportCreateListUseCase, 'createExpenseReportList')
+        .mockReturnValue(mockRes);
+
+      const result = await expenseController.postExpenseReportList(
+        mockReq,
+        mockUserId,
+      );
+
+      expect(mockExpenseReportCreateListUseCase.createExpenseReportList).toHaveBeenCalled();
       expect(result).toEqual(mockRes);
     });
   });
