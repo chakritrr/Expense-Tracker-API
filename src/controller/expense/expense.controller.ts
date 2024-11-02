@@ -15,12 +15,14 @@ import { ApiTags } from '@nestjs/swagger';
 
 import {
   PatchExpenseRequestDto,
+  PostExpenseFilterRequestDto,
   PostExpenseReportListRequestDto,
   PostExpenseRequestDto,
 } from 'src/core';
 import { JwtAuthGuard } from 'src/frameworks/guards/jwt.auth.guard';
 import { ExpenseCreateUseCase } from 'src/use-case/expense-create/expense-create-use-case';
 import { ExpenseDeleteUseCase } from 'src/use-case/expense-delete/expense-delete-use-case';
+import { ExpenseFilterCreateListUseCase } from 'src/use-case/expense-filter-list/expense-filter-list-use-case';
 import { ExpenseGetListUseCase } from 'src/use-case/expense-get-list/expense-get-list-use-case';
 import { ExpenseReportCreateListUseCase } from 'src/use-case/expense-report-create-list/expense-report-create-list-use-case';
 import { ExpenseUpdateUseCase } from 'src/use-case/expense-update/expense-update-use-case';
@@ -35,6 +37,7 @@ export class ExpenseController {
     private readonly expenseUpdateUseCase: ExpenseUpdateUseCase,
     private readonly expenseDeleteUseCase: ExpenseDeleteUseCase,
     private readonly expenseReportCreateListUseCase: ExpenseReportCreateListUseCase,
+    private readonly expenseFilterCreateListUseCase: ExpenseFilterCreateListUseCase,
   ) {}
 
   @Post('/v1/expense')
@@ -78,5 +81,13 @@ export class ExpenseController {
   ) {
     const userId = req.user.userId;
     return this.expenseReportCreateListUseCase.createExpenseReportList(postExpenseReportListRequestDto, userId);
+  }
+
+  @Post('/v1/expense/filter')
+  postExpenseFilter(
+    @Body() postExpenseFilterRequestDto: PostExpenseFilterRequestDto,
+    @Request() req,
+  ){
+    return this.expenseFilterCreateListUseCase.createExpenseFilterList(postExpenseFilterRequestDto, req.user.userId);
   }
 }

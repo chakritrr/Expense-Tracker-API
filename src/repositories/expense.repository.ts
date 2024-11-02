@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import {
   ExpenseEntity,
   IExpenseRepository,
+  PostExpenseFilterRequestDto,
+  PostExpenseFilterResponseDto,
   PostExpenseReportListRequestDto,
   PostExpenseReportListResponseDto,
 } from 'src/core';
@@ -69,5 +71,34 @@ export class ExpenseRepository implements IExpenseRepository {
     }));
 
     return resp;
+  }
+
+  async findExpenseFilter(
+    userId: string,
+    postExpenseFilterRequestDto: PostExpenseFilterRequestDto,
+  ): Promise<PostExpenseFilterResponseDto> {
+    const { startDate, endDate, category } = postExpenseFilterRequestDto;
+
+    let query = `
+      SELECT *
+      FROM expenses
+      WHERE "user_id" = $1
+    `;
+    const params: string[] = [userId];
+
+    if (startDate) {
+      query += ` AND "created_at" >= $2`;
+      params.push(startDate);
+    }
+    if (endDate) {
+      query += ` AND "created_at" <= $3`;
+      params.push(endDate);
+    }
+    if (category) {
+      query += ` AND "category" = $4`;
+      params.push(category);
+    }
+
+    return await this.expenseEntity.query(query, params);
   }
 }
