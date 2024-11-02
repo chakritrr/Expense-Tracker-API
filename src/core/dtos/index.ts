@@ -13,3 +13,5 @@ export * from './expense/post-expense-report-list/post-expense-report-list-reque
 export * from './expense/post-expense-report-list/post-expense-report-list-response.dto';
 export * from './expense/post-expense-filter/post-expense-filter-request.dto';
 export * from './expense/post-expense-filter/post-expense-filter-response.dto';
+export * from './expense/post-expense-paging/post-expense-paging-request.dto';
+export * from './expense/post-expense-paging/post-expense-paging-response.dto';
