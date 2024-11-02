@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "10d1b1a5-f397-4519-80be-de6ee0a9f51b",
+		"name": "expense-tracker-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21875035",
+		"_collection_link": "https://speeding-escape-333604.postman.co/workspace/Team-Workspace~5373c085-8c6b-476b-88be-201545bbb218/collection/21875035-10d1b1a5-f397-4519-80be-de6ee0a9f51b?action=share&source=collection_link&creator=21875035"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email.exemple@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email.exemple@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Expense",
+			"item": [
+				{
+					"name": "expense-create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Conserto de carro\",\r\n  \"amount\": 80.00,\r\n  \"category\": \"Tecnologia\",\r\n  \"notes\": \"Troca de pneus e revisão geral\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/expense",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expense-get-list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/expense",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expense-update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Jantar no restaurante\",\r\n    \"amount\": 95.50,\r\n    \"category\": \"Alimentação\",\r\n    \"notes\": \"Jantar com colegas de trabalho\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/expense/9f4decb8-eddd-439b-8e6c-f6ae7ea514ad",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense",
+								"9f4decb8-eddd-439b-8e6c-f6ae7ea514ad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expense-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/expense/6ddc449a-c768-40b5-bb01-0841b92bfd24",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense",
+								"6ddc449a-c768-40b5-bb01-0841b92bfd24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expense-report-list-create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"startDate\": \"2024-10-28\",\r\n    \"endDate\": \"2024-11-02\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/expense/report",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expense-filter-list-create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"startDate\": \"2024-10-28\",\r\n    \"endDate\": \"2024-11-02\",\r\n    \"category\": \"Alimentação\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/expense/filter",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expense-paging-list-create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"startDate\": \"2024-10-28\",\r\n    \"endDate\": \"2024-11-02\",\r\n    \"category\": \"Transporte\",\r\n    \"page\": 1,\r\n    \"limit\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/expense/paging",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"expense",
+								"paging"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsLmV4ZW1wbGVAZ21haWwuY29tIiwic3ViIjoiZTFmY2UwODktNGRmYS00ZWM1LTlkYWMtYzQ2OWU4MGM1MTFmIiwiaWF0IjoxNzMwNTE4MTAzLCJleHAiOjE3MzA1MjE3MDN9.KJ2XNaAtR-kJMwEtyWqj09yGausf1D7TpHeidTRurgQ",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		}
+	]
+}
