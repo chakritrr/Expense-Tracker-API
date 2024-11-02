@@ -15,6 +15,7 @@ import { ExpenseUpdateUseCaseModule } from './use-case/expense-update/expense-up
 import { ExpenseDeleteUseCaseModule } from './use-case/expense-delete/expense-delete-use-case.module';
 import { ExpenseReportCreateListUseCaseModule } from './use-case/expense-report-create-list/expense-report-create-list-use-case.module';
 import { ExpenseFilterCreateListUseCaseModule } from './use-case/expense-filter-list/expense-filter-list-use-case.module';
+import { ExpensePagingCreateListUseCaseModule } from './use-case/expense-paging-list/expense-paging-list-use-case.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ExpenseFilterCreateListUseCaseModule } from './use-case/expense-filter-
     ExpenseDeleteUseCaseModule,
     ExpenseReportCreateListUseCaseModule,
     ExpenseFilterCreateListUseCaseModule,
+    ExpensePagingCreateListUseCaseModule,
   ],
   controllers: [RegisterController, LoginController, ExpenseController],
 })
