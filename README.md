@@ -48,13 +48,13 @@
 | `/api/v1/expense/paging`            | POST   | Get pagination for listing expenses   | `{"startDate": "2024-10-28", "endDate": "2024-11-02", "category": "limentação", "page": 1, "limit": 10}`|
 
 ## Testing
-# Run unit tests
+### Run unit tests
 npm run test
 
-# Run integration tests
+### Run integration tests
 npm run test:integration
 
-# Generate test coverage report
+### Generate test coverage report
 npm run test:coverage
 
 
