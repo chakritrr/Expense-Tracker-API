@@ -16,6 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 import {
   PatchExpenseRequestDto,
   PostExpenseFilterRequestDto,
+  PostExpensePagingRequestDto,
   PostExpenseReportListRequestDto,
   PostExpenseRequestDto,
 } from 'src/core';
@@ -24,6 +25,7 @@ import { ExpenseCreateUseCase } from 'src/use-case/expense-create/expense-create
 import { ExpenseDeleteUseCase } from 'src/use-case/expense-delete/expense-delete-use-case';
 import { ExpenseFilterCreateListUseCase } from 'src/use-case/expense-filter-list/expense-filter-list-use-case';
 import { ExpenseGetListUseCase } from 'src/use-case/expense-get-list/expense-get-list-use-case';
+import { ExpensePagingCreateListUseCase } from 'src/use-case/expense-paging-list/expense-paging-list-use-case';
 import { ExpenseReportCreateListUseCase } from 'src/use-case/expense-report-create-list/expense-report-create-list-use-case';
 import { ExpenseUpdateUseCase } from 'src/use-case/expense-update/expense-update-use-case';
 
@@ -38,6 +40,7 @@ export class ExpenseController {
     private readonly expenseDeleteUseCase: ExpenseDeleteUseCase,
     private readonly expenseReportCreateListUseCase: ExpenseReportCreateListUseCase,
     private readonly expenseFilterCreateListUseCase: ExpenseFilterCreateListUseCase,
+    private readonly expensePagingCreateListUseCase: ExpensePagingCreateListUseCase,
   ) {}
 
   @Post('/v1/expense')
@@ -84,10 +87,20 @@ export class ExpenseController {
   }
 
   @Post('/v1/expense/filter')
+  @HttpCode(HttpStatus.OK)
   postExpenseFilter(
     @Body() postExpenseFilterRequestDto: PostExpenseFilterRequestDto,
     @Request() req,
   ){
     return this.expenseFilterCreateListUseCase.createExpenseFilterList(postExpenseFilterRequestDto, req.user.userId);
+  }
+
+  @Post('/v1/expense/paging')
+  @HttpCode(HttpStatus.OK)
+  postExpensePagingList(
+    @Body() postExpensePagingRequestDto: PostExpensePagingRequestDto,
+    @Request() req,
+  ){
+    return this.expensePagingCreateListUseCase.createExpensePagingList(postExpensePagingRequestDto, req.user.userId);
   }
 }

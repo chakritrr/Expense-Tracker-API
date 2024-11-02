@@ -2,6 +2,8 @@ import { ExpenseEntity } from '../entities';
 import {
   PostExpenseFilterRequestDto,
   PostExpenseFilterResponseDto,
+  PostExpensePagingRequestDto,
+  PostExpensePagingResponseDto,
   PostExpenseReportListRequestDto,
   PostExpenseReportListResponseDto,
 } from '../dtos';
@@ -22,4 +24,9 @@ export abstract class IExpenseRepository {
     userId: string,
     postExpenseFilterRequestDto: PostExpenseFilterRequestDto,
   ): Promise<PostExpenseFilterResponseDto>;
+
+  abstract findExpensePaging(
+    postExpensePagingRequestDto: PostExpensePagingRequestDto,
+    userId: string,
+  ): Promise<PostExpensePagingResponseDto>;
 }

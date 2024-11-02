@@ -7,6 +7,8 @@ import {
   IExpenseRepository,
   PostExpenseFilterRequestDto,
   PostExpenseFilterResponseDto,
+  PostExpensePagingRequestDto,
+  PostExpensePagingResponseDto,
   PostExpenseReportListRequestDto,
   PostExpenseReportListResponseDto,
 } from 'src/core';
@@ -98,6 +100,39 @@ export class ExpenseRepository implements IExpenseRepository {
       query += ` AND "category" = $4`;
       params.push(category);
     }
+
+    return await this.expenseEntity.query(query, params);
+  }
+
+  async findExpensePaging(
+    postExpensePagingRequestDto: PostExpensePagingRequestDto,
+    userId: string,
+  ): Promise<PostExpensePagingResponseDto> {
+    const { startDate, endDate, category, page, limit } =
+      postExpensePagingRequestDto;
+    let query = `
+      SELECT *
+      FROM expenses
+      WHERE "user_id" = $1
+    `;
+    const params: string[] = [userId];
+
+    if (startDate) {
+      query += ` AND "created_at" >= $2`;
+      params.push(startDate);
+    }
+    if (endDate) {
+      query += ` AND "created_at" <= $3`;
+      params.push(endDate);
+    }
+    if (category) {
+      query += ` AND "category" = $4`;
+      params.push(category);
+    }
+
+    const offset = (page - 1) * limit;
+    query += ` ORDER BY "created_at" DESC LIMIT $5 OFFSET $6`;
+    params.push(limit.toString(), offset.toString());
 
     return await this.expenseEntity.query(query, params);
   }
