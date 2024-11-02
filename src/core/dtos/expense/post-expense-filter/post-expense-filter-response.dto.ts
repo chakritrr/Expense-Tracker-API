@@ -21,7 +21,4 @@ export class PostExpenseFilterResponseDto {
 
   @ApiProperty()
   category: string;
-
-  @ApiProperty()
-  user_id: string;
 }

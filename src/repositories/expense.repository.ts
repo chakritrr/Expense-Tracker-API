@@ -45,32 +45,24 @@ export class ExpenseRepository implements IExpenseRepository {
   ): Promise<PostExpenseReportListResponseDto> {
     const { startDate, endDate } = postExpenseReportListRequestDto;
 
-    const queryParams: any[] = [userId];
-    let whereClause = 'WHERE "user_id" = $1';
-
-    if (startDate && endDate) {
-      whereClause += ' AND "created_at" BETWEEN $2 AND $3';
-      queryParams.push(startDate, endDate);
-    }
-
     const query = `
-    SELECT 
-      category, 
-      ROUND(SUM(amount)::numeric, 2) as "totalAmount", 
-      COUNT(*) as "transactionCount"
-    FROM expenses
-    ${whereClause}
-    GROUP BY category
-    ORDER BY "totalAmount" DESC
-  `;
+      SELECT "category", SUM("amount") AS total_amount, COUNT(*) AS count
+      FROM expenses
+      WHERE "user_id" = $1
+        AND "created_at" >= $2
+        AND "created_at" <= $3
+      GROUP BY "category"
+    `;
+    const params = [userId, startDate, endDate];
+    const result = await this.expenseEntity.query(query, params);
 
-    const report = await this.expenseEntity.query(query, queryParams);
-
-    const resp = report.map((item) => ({
-      category: item.category,
-      total: parseFloat(item.totalAmount),
-      Count: parseInt(item.transactionCount),
-    }));
+    const resp = result.map((item) => {
+      const responseDto = new PostExpenseReportListResponseDto();
+      responseDto.category = item.category;
+      responseDto.total = parseFloat(item.total_amount);
+      responseDto.count = item.count;
+      return responseDto;
+    });
 
     return resp;
   }
@@ -101,7 +93,21 @@ export class ExpenseRepository implements IExpenseRepository {
       params.push(category);
     }
 
-    return await this.expenseEntity.query(query, params);
+    const result = await this.expenseEntity.query(query, params);
+
+    const resp = result.map((item) => {
+      const responseDto = new PostExpenseFilterResponseDto();
+      responseDto.id = item.id;
+      responseDto.title = item.title;
+      responseDto.amount = parseFloat(item.amount);
+      responseDto.notes = item.notes;
+      responseDto.category = item.category;
+      responseDto.created_at = item.created_at;
+      responseDto.updated_at = item.updated_at;
+      return responseDto;
+    });
+
+    return resp;
   }
 
   async findExpensePaging(
@@ -134,6 +140,20 @@ export class ExpenseRepository implements IExpenseRepository {
     query += ` ORDER BY "created_at" DESC LIMIT $5 OFFSET $6`;
     params.push(limit.toString(), offset.toString());
 
-    return await this.expenseEntity.query(query, params);
+    const result = await this.expenseEntity.query(query, params);
+
+    const resp = result.map((item) => {
+      const responseDto = new PostExpensePagingResponseDto();
+      responseDto.id = item.id;
+      responseDto.title = item.title;
+      responseDto.amount = parseFloat(item.amount);
+      responseDto.notes = item.notes;
+      responseDto.category = item.category;
+      responseDto.created_at = item.created_at;
+      responseDto.updated_at = item.updated_at;
+      return responseDto;
+    });
+
+    return resp;
   }
 }

@@ -21,7 +21,4 @@ export class PostExpensePagingResponseDto {
 
   @ApiProperty()
   category: string;
-
-  @ApiProperty()
-  user_id: string;
 }
